@@ -1,3 +1,50 @@
-# Cognifyz ML Internship — Task 1
+# Cognifyz Machine Learning Internship — Task 1
 
-Restaurant rating prediction. See project files for the complete implementation and measured results.
+## Restaurant Rating Prediction
+
+This project predicts a restaurant's `Aggregate rating` from the supplied Cognifyz restaurant dataset. It follows the Task 1 brief: clean missing data, encode categories, split the data, train a regression model, evaluate with MSE and R², and examine influential features.
+
+## Repository layout
+
+```text
+data/Dataset.csv                 Supplied dataset
+src/train_rating_model.py        Reproducible training and evaluation script
+reports/metrics.json             Test-set metrics from the recorded run
+reports/feature_importance.csv   Grouped Random Forest feature importances
+requirements.txt                 Python dependencies
+```
+
+## Technology
+
+- Python 3.10 or newer
+- pandas and NumPy for data handling
+- scikit-learn for preprocessing, splitting, regression, and metrics
+
+## Run the project
+
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+python -m pip install -r requirements.txt
+python src/train_rating_model.py --data data/Dataset.csv
+```
+
+The script writes `reports/metrics.json` and `reports/feature_importance.csv`. Use `--test-size`, `--random-state`, and `--trees` to change the split or forest settings.
+
+## Method
+
+The target is `Aggregate rating`. The numeric inputs are country code, coordinates, average cost for two, price range, and votes. City, locality, cuisines, currency, and service-option fields are treated as categorical. Missing numeric values are filled with the training median; categorical values use the most frequent training value and one-hot encoding. Unknown categories in the test data are safely ignored.
+
+An 80/20 random train/test split with seed 42 is used by default. A Random Forest regressor with 300 trees provides a nonlinear baseline. `Rating color` and `Rating text` are omitted because they encode the displayed rating; names, addresses, locality verbose, and restaurant IDs are omitted as identifiers or redundant fields. The model is evaluated on the held-out test rows using mean squared error (MSE), root mean squared error (RMSE), and R².
+
+## Results
+
+The measured test results are recorded in [`reports/metrics.json`](reports/metrics.json). The run uses the supplied dataset and fixed seed 42. Feature importance is aggregated back to the original input columns in [`reports/feature_importance.csv`](reports/feature_importance.csv).
+
+Interpret these as predictive associations for this dataset and split. Feature importance does not establish that changing a feature will cause a rating to change, and random splitting can allow restaurants from the same locality to appear in both sets.
+
+## Dataset and integrity
+
+The included CSV is the dataset supplied with the internship task. The script is commented and intentionally small enough to inspect and modify. Review the code and results before presenting or submitting the work, and follow the internship's originality and attribution rules.
+
