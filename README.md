@@ -18,7 +18,7 @@ requirements.txt                 Python dependencies
 
 - Python 3.10 or newer
 - pandas and NumPy for data handling
-- scikit-learn for preprocessing, splitting, regression, and metrics
+- NumPy for the Ridge regression fit and evaluation metrics
 
 ## Run the project
 
@@ -34,13 +34,15 @@ The script writes `reports/metrics.json` and `reports/feature_importance.csv`. U
 
 ## Method
 
-The target is `Aggregate rating`. The numeric inputs are country code, coordinates, average cost for two, price range, and votes. City, locality, cuisines, currency, and service-option fields are treated as categorical. Missing numeric values are filled with the training median; categorical values use the most frequent training value and one-hot encoding. Unknown categories in the test data are safely ignored.
+The target is `Aggregate rating`. The numeric inputs are country code, coordinates, average cost for two, price range, and votes. City, locality, cuisines, currency, and service-option fields are treated as categorical and mapped into 64 fixed indicator buckets per field with a stable feature hash. Hashing keeps high-cardinality fields manageable; different categories can share a bucket. Numeric missing values use the training median, and categorical missing values use the training mode. Scaling statistics and imputers are learned from training rows only.
 
-An 80/20 random train/test split with seed 42 is used by default. A Random Forest regressor with 300 trees provides a nonlinear baseline. `Rating color` and `Rating text` are omitted because they encode the displayed rating; names, addresses, locality verbose, and restaurant IDs are omitted as identifiers or redundant fields. The model is evaluated on the held-out test rows using mean squared error (MSE), root mean squared error (RMSE), and R².
+An 80/20 random train/test split with seed 42 is used by default. The model is Ridge regression, a linear regression model with L2 regularization. `Rating color` and `Rating text` are omitted because they encode the displayed rating; names, addresses, locality verbose, and restaurant IDs are omitted as identifiers or redundant fields. The model is evaluated on held-out test rows using mean squared error (MSE), root mean squared error (RMSE), and R². A permutation analysis ranks how much each original input feature contributes to the test-set MSE.
 
 ## Results
 
-The script records the measured test results in `reports/metrics.json` and the feature importance ranking in `reports/feature_importance.csv` each time it runs. The default run uses the supplied dataset, an 80/20 split, seed 42, and 300 trees. No fixed metric values are hard-coded into the project; use the generated files for the results from your run.
+The recorded run used all 9,551 rows, an 80/20 split (7,640 training and 1,911 test rows), seed 42, and ridge alpha 1.0. Held-out results were **MSE 1.3839**, **RMSE 1.1764**, and **R² 0.3983**. The model explains about 39.8% of rating variation in this test split, so it is a baseline rather than a highly accurate predictor.
+
+Permutation importance ranked City, Price range, Has Online delivery, and Locality highest. Shuffling City increased test MSE by about 0.349 on average across five repeats. These are predictive associations, not causal effects. Full metrics and importance values are in `reports/metrics.json` and `reports/feature_importance.csv`; rerunning the script regenerates them.
 
 Interpret these as predictive associations for this dataset and split. Feature importance does not establish that changing a feature will cause a rating to change, and random splitting can allow restaurants from the same locality to appear in both sets.
 
