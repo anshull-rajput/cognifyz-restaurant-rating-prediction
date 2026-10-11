@@ -1,0 +1,85 @@
+{
+  "model": "Ridge regression (linear regression with L2 regularization)",
+  "rows_used": 9551,
+  "rows_dropped_missing_target": 0,
+  "train_rows": 7640,
+  "test_rows": 1911,
+  "features": [
+    "Country Code",
+    "Longitude",
+    "Latitude",
+    "Average Cost for two",
+    "Price range",
+    "Votes",
+    "City",
+    "Locality",
+    "Cuisines",
+    "Currency",
+    "Has Table booking",
+    "Has Online delivery",
+    "Is delivering now",
+    "Switch to order menu"
+  ],
+  "categorical_encoding": "stable feature hashing (64 buckets per field)",
+  "random_state": 42,
+  "ridge_alpha": 1.0,
+  "permutation_repeats": 5,
+  "mse": 1.38389799568051,
+  "rmse": 1.176391939652984,
+  "r2": 0.39831901734282193,
+  "target_mean_test": 2.686289900575615,
+  "target_std_test": 1.516989439956598,
+  "top_features": [
+    {
+      "feature": "City",
+      "mse_increase_mean": 0.3493491739958888,
+      "mse_increase_std": 0.02342096629598602
+    },
+    {
+      "feature": "Price range",
+      "mse_increase_mean": 0.2187862323905274,
+      "mse_increase_std": 0.0251792480046762
+    },
+    {
+      "feature": "Has Online delivery",
+      "mse_increase_mean": 0.19899645412276779,
+      "mse_increase_std": 0.029703841994820034
+    },
+    {
+      "feature": "Locality",
+      "mse_increase_mean": 0.18369277199835704,
+      "mse_increase_std": 0.012347005826206228
+    },
+    {
+      "feature": "Longitude",
+      "mse_increase_mean": 0.1180315345065445,
+      "mse_increase_std": 0.011499975138197078
+    },
+    {
+      "feature": "Cuisines",
+      "mse_increase_mean": 0.09963912865844496,
+      "mse_increase_std": 0.00827312812363017
+    },
+    {
+      "feature": "Votes",
+      "mse_increase_mean": 0.09114886102451898,
+      "mse_increase_std": 0.012904739904984495
+    },
+    {
+      "feature": "Country Code",
+      "mse_increase_mean": 0.08153155644845826,
+      "mse_increase_std": 0.013323058281929185
+    },
+    {
+      "feature": "Currency",
+      "mse_increase_mean": 0.058285339837813185,
+      "mse_increase_std": 0.013888027247184005
+    },
+    {
+      "feature": "Latitude",
+      "mse_increase_mean": 0.04012484505331435,
+      "mse_increase_std": 0.009533055932411019
+    }
+  ],
+  "interpretation_note": "Permutation importance is predictive association, not evidence of causation."
+}
