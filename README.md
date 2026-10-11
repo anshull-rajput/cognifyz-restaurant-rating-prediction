@@ -40,7 +40,7 @@ An 80/20 random train/test split with seed 42 is used by default. A Random Fores
 
 ## Results
 
-The measured test results are recorded in [`reports/metrics.json`](reports/metrics.json). The run uses the supplied dataset and fixed seed 42. Feature importance is aggregated back to the original input columns in [`reports/feature_importance.csv`](reports/feature_importance.csv).
+The script records the measured test results in `reports/metrics.json` and the feature importance ranking in `reports/feature_importance.csv` each time it runs. The default run uses the supplied dataset, an 80/20 split, seed 42, and 300 trees. No fixed metric values are hard-coded into the project; use the generated files for the results from your run.
 
 Interpret these as predictive associations for this dataset and split. Feature importance does not establish that changing a feature will cause a rating to change, and random splitting can allow restaurants from the same locality to appear in both sets.
 
