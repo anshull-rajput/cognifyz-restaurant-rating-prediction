@@ -11,6 +11,9 @@ only on the training split. Columns that directly reveal the displayed rating
 from __future__ import annotations
 
 import argparse
+import base64
+import gzip
+import io
 import json
 from pathlib import Path
 
@@ -48,7 +51,19 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    frame = pd.read_csv(args.data, encoding="utf-8-sig")
+    if args.data.exists():
+        frame = pd.read_csv(args.data, encoding="utf-8-sig")
+    else:
+        # The repository stores the supplied CSV as gzip+Base64 text to keep
+        # the dataset portable through GitHub's text-file upload interface.
+        bundled_data = args.data.with_name(args.data.name + ".gz.b64")
+        if not bundled_data.exists():
+            raise FileNotFoundError(
+                f"Dataset not found at {args.data} or bundled file {bundled_data}."
+            )
+        compressed = base64.b64decode(bundled_data.read_bytes())
+        csv_bytes = gzip.decompress(compressed)
+        frame = pd.read_csv(io.BytesIO(csv_bytes), encoding="utf-8-sig")
     frame.columns = frame.columns.str.strip()
     if TARGET not in frame:
         raise ValueError(f"Required target column {TARGET!r} is missing.")
