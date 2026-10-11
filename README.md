@@ -7,7 +7,7 @@ This project predicts a restaurant's `Aggregate rating` from the supplied Cognif
 ## Repository layout
 
 ```text
-data/Dataset.csv                 Supplied dataset
+data/Dataset.csv.gz.b64          Compressed copy of the supplied dataset
 src/train_rating_model.py        Reproducible training and evaluation script
 reports/metrics.json             Test-set metrics from the recorded run
 reports/feature_importance.csv   Grouped Random Forest feature importances
@@ -46,5 +46,5 @@ Interpret these as predictive associations for this dataset and split. Feature i
 
 ## Dataset and integrity
 
-The included CSV is the dataset supplied with the internship task. The script is commented and intentionally small enough to inspect and modify. Review the code and results before presenting or submitting the work, and follow the internship's originality and attribution rules.
+The bundled dataset is the CSV supplied with the internship task, stored compressed and automatically read by the script when `data/Dataset.csv` is not present. You can also pass an uncompressed CSV with `--data`. The script is commented and intentionally small enough to inspect and modify. Review the code and results before presenting or submitting the work, and follow the internship's originality and attribution rules.
 
